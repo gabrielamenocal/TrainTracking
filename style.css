@@ -1,0 +1,26 @@
+html {
+    box-sizing: border-box;
+  }
+
+  *, *:before, *:after {
+    box-sizing: inherit;
+  }
+ 
+ #title{
+    background-color:purple; 
+    color: aliceblue; 
+    text-align: center;
+ }
+
+ #currentScheduled{
+    background-color:purple; 
+    color: aliceblue; 
+    text-align: center;"
+ }
+
+ #trainScheluded{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-gap: 10px;
+ }
+
