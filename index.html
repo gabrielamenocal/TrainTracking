@@ -28,7 +28,7 @@
         <div style ="margin:35px;" id="container">
 
                     <div  id= "title" class="jumbotron jumbotron-fluid">
-                            <h1> <i class="fas fa-newspaper"> Train Tracker </i> </h1>
+                            <h1> <i class="fas fa-train"> Train Tracker </i> </h1> 
                     </div>
     
             <div class="row">
@@ -40,44 +40,61 @@
                             </div>
                             <div id="trainScheluded" class="card-body">
                                 
-                                <div id="trainName" class="row"> <h3> Train Name </h3> </div>
-                                <div id="destination" class="row"> <h3> Destination </h3>  </div>
-                                <div id="Frequency" class="row"> <h3> Frequency </h3>  </div>
-                                <div id="NextArrival" class="row"> <h3> Next Arrival </h3>  </div>
-                                <div id="MinAway" class="row"> <h3> Minutes Away</h3>  </div>                                          
+                                <div class="row"> <h3> Train Name </h3>
+                                    <span id="trainName"></span>
+                                </div>
+
+                                <div  class="row"> <h3> Destination </h3> 
+                                    <span id="destination"></span> 
+                                </div>
+
+                                <div  class="row"> <h3> Frequency </h3>  
+                                    <span id="Frequency"></span>
+                                </div>
+
+                                <div  class="row"> <h3> Next Arrival </h3>  
+                                    <span id="NextArrival"></span>
+                                </div>
+
+                                <div  class="row"> <h3> Minutes Away</h3>  
+                                    <span id="MinAway"></span>
+                                </div>                                          
     
                             </div>
                     </div>
     
                     <div class="card articles" >
-                            <div style= "background-color:purple; color: aliceblue; text-align: center;" class="card-header">
+                            <div id="addTrainTitle" class="card-header">
                               <h3> Add Train </h3>
                             </div>
                             <div class="card-body">
                                                                 
-                                 <div id="NewTrain">
-
+                                 <div id="NewTrainFormat">
                             
                                         <label for="TrainName-input">Train Name:</label>
                                         <input class="form-control" id="TrainName-input" type="text">
 
-                                        <label for="Destination-input">Destination:</label>
-                                        <input class="form-control" id="Destination-input" type="text">
+                                        <label for="destination-input">Destination:</label>
+                                        <input class="form-control" id="destination-input" type="text">
 
-                                        <label for="firstTime-input">First Train Time (HH:mm format):</label>
+                                        <label for="firstTime-input">First Train Time (HH:mm military-format):</label>
                                         <input class="form-control" id="firstTime-input" type="text">   
 
                                         <label for="frecuency-input"> Frecuency (min):</label>
                                         <input class="form-control" id="frecuency-input" type="text">  
 
-                                        <button id="submit-button" type="submit">Submit</button>
+                                        <div>
+                                            <h3> Please confirm the information entered:</h3>                                              
+                                             <p> Train Name: <span id="NewTrain-name"></span></p>
+                                             <p> Destination: <span id="NewTrain-destination"></span></p>
+                                             <p> First Train Time: <span id="NewTrain-time"></span></p>
+                                             <p> Frecuency: <span id="NewTrain-frecuency"></span></p>
+                                        </div>                                       
 
-                                        
+                                        <button id="submit-button" class="btn btn-primary" type="submit">Submit</button>                                        
                                               
-                                        <hr>
-                                              
-                                        <div id="displayed-data"></div>
-                            
+                                        <hr>                                              
+                           
                                     </div>
                             </div>
                     </div>
@@ -89,7 +106,6 @@
 
     <footer>
             <h3 style="text-align: center;"> <i class="fas fa-copyright"> 2018 </i> </h3>
-
     </footer>
 
 
@@ -110,9 +126,7 @@
             messagingSenderId: "816251167049"
           };
 
-          firebase.initializeApp(config);
-
-          
+          firebase.initializeApp(config);          
 
 
         ///// ************** FIREBASE CODE ENDING ****************************
@@ -123,24 +137,29 @@
         console.log("you enter");
         console.log(database);
 
-        var name = "";
-        var age = "";
-        var phone = "";
+        var TrainName = "";
+        var destination = "";
+        var firstTimeTrain = "";
+        var frecuency = "";
 
-         $("#click-button").on("click", function(event) {
+
+         $("#submit-button").on("click", function(event) {
             // Prevent the page from refreshing
             event.preventDefault();
 
             // Get inputs
-            name = $("#name-input").val().trim();
-            age = $("#age-input").val().trim();
-            phone = $("#phone-input").val().trim();
+            TrainName = $("#TrainName-input").val().trim();
+            destination = $("#destination-input").val().trim();
+            firstTimeTrain = $("#firstTime-input").val().trim();
+            frecuency = $("#frecuency-input").val().trim();
+
 
             // Change what is saved in firebase
             database.ref().set({
-                name: name,
-                age: age,
-                phone: phone
+                TrainName: TrainName,
+                destination: destination,
+                firstTimeTrain: firstTimeTrain,
+                frecuency: frecuency
             });
         });
 
@@ -149,14 +168,18 @@
             console.log(snapshot.val());
 
             // Log the value of the various properties
-            console.log(snapshot.val().name);
-            console.log(snapshot.val().age);
-            console.log(snapshot.val().phone);
-
+            console.log(snapshot.val().TrainName);
+            console.log(snapshot.val().destination);
+            console.log(snapshot.val().firstTimeTrain);
+            console.log(snapshot.val().frecuency);
+           
             // Change the HTML
-            $("#displayed-data").text(snapshot.val().name + " | " + snapshot.val().age + " | " + snapshot.val().phone);
+            $("NewTrain-name").text(snapshot.val().TrainName);
+            $("#NewTrain-destination").text(snapshot.val().destination);
+            $("#NewTrain-time").text(snapshot.val().firstTimeTrain);
+            $("#NewTrain-frecuency").text(snapshot.val().frecuency);
 
-            // If any errors are experienced, log them to console.
+
             }, function(errorObject) {
             console.log("The read failed: " + errorObject.code);
         });

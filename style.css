@@ -7,20 +7,40 @@ html {
   }
  
  #title{
-    background-color:purple; 
+    background-color: #BA5624; 
     color: aliceblue; 
     text-align: center;
  }
 
  #currentScheduled{
-    background-color:purple; 
+    background-color:#BA5624; 
     color: aliceblue; 
-    text-align: center;"
+    text-align: center;
  }
 
  #trainScheluded{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     grid-gap: 10px;
+ }
+
+ #addTrainTitle{
+    background-color:#BA5624; 
+    color: aliceblue; 
+    text-align: center;
+ }
+
+ .btn-primary{
+     margin-top: 20px;
+ }
+
+ footer header{
+    background-color: #70CAD1; 
+    color: aliceblue; 
+    text-align: center;
+ }
+
+ p{
+     font-size: 24px;
  }
 
