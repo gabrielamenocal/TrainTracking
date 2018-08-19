@@ -7,25 +7,19 @@ html {
   }
  
  #title{
-    background-color: #BA5624; 
+    background-color: #255C99; 
     color: aliceblue; 
     text-align: center;
  }
 
  #currentScheduled{
-    background-color:#BA5624; 
+    background-color:#255C99; 
     color: aliceblue; 
     text-align: center;
  }
 
- #trainScheluded{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    grid-gap: 10px;
- }
-
  #addTrainTitle{
-    background-color:#BA5624; 
+    background-color:#255C99; 
     color: aliceblue; 
     text-align: center;
  }
@@ -34,13 +28,30 @@ html {
      margin-top: 20px;
  }
 
- footer header{
+ footer{
     background-color: #70CAD1; 
     color: aliceblue; 
     text-align: center;
+    padding: 20px;
+
+ }
+
+ header{
+    background-color: #70CAD1; 
+    color: aliceblue; 
+    text-align: center;
+    padding: 20px;
  }
 
  p{
-     font-size: 24px;
+     font-size: 16px;;
+ }
+
+ #trainScheluded{
+     font-size: 20px;
+ }
+
+ #confirmation{
+     margin:15px;
  }
 
