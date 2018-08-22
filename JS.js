@@ -63,7 +63,7 @@
           var timeArr = firstTrainTimeData.split(":")
 
             // Use the array to make a actual moment() and store in trainTime
-            var trainTime = moment().hours(timeArr[0]).minutes(timeArr[1])
+            var firstTrainTimeData = moment().hours(timeArr[0]).minutes(timeArr[1])
 
             // maxMoment will now be either the current time or the first train arrival of the day. Whichever is further out
             // var maxMoment = moment.max(moment(), trainTime)
