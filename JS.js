@@ -19,27 +19,25 @@
         console.log(database);
 
         // // INITIAL VALUES
-        var TrainName = "";
-        var destination = "";
-        var firstTimeTrain = "";
-        var frequency = "";
-        var newTrain
+        
+       var newTrain = { };
 
         // GET THE USER'S INPUT AND ADD A NEW TRAIN
          $("#confirm-button").on("click", function(event) {
             event.preventDefault();
-            // Get inputs
-            TrainName = $("#TrainName-input").val().trim();
-            destination = $("#destination-input").val().trim();
-            firstTimeTrain = $("#firstTime-input").val().trim();
-            frequency = $("#frequency-input").val().trim();
-            newTrain = {
+
+           var TrainName = $("#TrainName-input").val().trim();
+           var  destination = $("#destination-input").val().trim();
+           var firstTimeTrain = $("#firstTime-input").val().trim();
+            var frequency = $("#frequency-input").val().trim();
+
+           newTrain = {
                 TrainName: TrainName,
                 destination: destination,
                 firstTimeTrain: firstTimeTrain,
                 frequency: frequency,
-                // dateAdded: firebase.database.ServerValue.TIMESTAMP
             }
+
             console.log(newTrain);
             $("#NewTrain-name").text(newTrain.TrainName);
             $("#NewTrain-destination").text(newTrain.destination);
@@ -68,7 +66,7 @@
             var trainTime = moment().hours(timeArr[0]).minutes(timeArr[1])
 
             // maxMoment will now be either the current time or the first train arrival of the day. Whichever is further out
-            var maxMoment = moment.max(moment(), trainTime)
+            // var maxMoment = moment.max(moment(), trainTime)
 
             // If the first train has not come yet maxMoment is equal to trainTime (First train of the day) otherwise it is equal to the current moment
             // if (maxMoment === trainTime) {
