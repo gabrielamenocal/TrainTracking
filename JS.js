@@ -1,4 +1,4 @@
- ///// ************** FIREBASE CODE ****************************
+///// ************** FIREBASE CODE ****************************
           // Initialize Firebase
           var config = {
             apiKey: "AIzaSyBKBqq9-IYTioKxSuQGsl41OPnATkYPK14",
@@ -9,7 +9,7 @@
             messagingSenderId: "816251167049"
           };
 
-          firebase.initializeApp(config);        
+          firebase.initializeApp(config);
 
 
         ///// ************** FIREBASE CODE ENDING ****************************
@@ -18,103 +18,91 @@
 
         console.log(database);
 
-        // INITIAL VALUES
+        // // INITIAL VALUES
         var TrainName = "";
         var destination = "";
         var firstTimeTrain = "";
-        var frecuency = "";
+        var frequency = "";
+        var newTrain
 
         // GET THE USER'S INPUT AND ADD A NEW TRAIN
          $("#confirm-button").on("click", function(event) {
             event.preventDefault();
-
             // Get inputs
             TrainName = $("#TrainName-input").val().trim();
             destination = $("#destination-input").val().trim();
             firstTimeTrain = $("#firstTime-input").val().trim();
-            frecuency = $("#frecuency-input").val().trim();
-
-            var newTrain = {
+            frequency = $("#frequency-input").val().trim();
+            newTrain = {
                 TrainName: TrainName,
                 destination: destination,
                 firstTimeTrain: firstTimeTrain,
-                frecuency: frecuency,
-                dateAdded: firebase.database.ServerValue.TIMESTAMP
+                frequency: frequency,
+                // dateAdded: firebase.database.ServerValue.TIMESTAMP
             }
+            console.log(newTrain);
+            $("#NewTrain-name").text(newTrain.TrainName);
+            $("#NewTrain-destination").text(newTrain.destination);
+            $("#NewTrain-time").text(newTrain.firstTimeTrain);
+            $("#NewTrain-frequency").text(newTrain.frequency);
+
         });
 
         $("#submit-button").on("click", function(event) {
-            
-            var sv = Snapshot.val();
-
-             // VALUES PRESENTED IN THE CONFIRMATION AREA BEFORE SUBMIT
-            $("#NewTrain-name").text(sv.TrainName);
-            $("#NewTrain-destination").text(sv.destination);
-            $("#NewTrain-time").text(sv.firstTimeTrain);
-            $("#NewTrain-frecuency").text(sv.frecuency); 
-
-            database.ref().push(newTrain);        
-
+            event.preventDefault();
+            database.ref('/trains').push(newTrain);
         });
-
-         //CLEAR THE INPUTS FIELD
-         $("#TrainName-input").val("");
-         $("#destination-input").val("");
-         $("#firstTime-input").val("");
-         $("#frecuency-input").val("");
-
-         // CLEAR THE CONFIRMATION VALUES 
-         $("#NewTrain-name").text("");
-         $("#NewTrain-destination").text("");
-         $("#NewTrain-time").text("");
-         $("#NewTrain-frecuency").text(""); 
-
-        // LOG JUST TO MAKE SURE
-        console.log(newTrain.TrainName);
-        console.log(newTrain.destination);
-        console.log(newTrain.firstTimeTrain);
-        console.log(newTrain.frecuency)
 
         // GET THE VALUES STORAGE IN FIREBASE
-        database.ref().on("child_added", function(childSnapshot) {
+        database.ref('/trains').on("child_added", function(childSnapshot) {
+          console.log(childSnapshot.val());
 
-            var csv = childSnapshot.val();
+          var trainNameData = childSnapshot.val().TrainName
+          var destinationData = childSnapshot.val().destination
+          var frequencyData = childSnapshot.val().firstTimeTrain
+          var firstTrainTimeData = childSnapshot.val().frequency
 
-            console.log(snapshot.val());
-            console.log(childSnapshot.val());
+          var timeArr = firstTrainTimeData.split(":")
 
-            console.log(csv.TrainName);
-            console.log(csv.destination);
-            console.log(csv.firstTimeTrain);
-            console.log(csv.frecuency);
-            console.log(csv.joinDate);
-            
-            TrainName =csv.TrainName;
-            destination = csv.destination;
-            firstTimeTrain = csv.firstTimeTrain;
-            frecuency = csv.frecuency;
+            // Use the array to make a actual moment() and store in trainTime
+            var trainTime = moment().hours(timeArr[0]).minutes(timeArr[1])
+
+            // maxMoment will now be either the current time or the first train arrival of the day. Whichever is further out
+            var maxMoment = moment.max(moment(), trainTime)
+
+            // If the first train has not come yet maxMoment is equal to trainTime (First train of the day) otherwise it is equal to the current moment
+            // if (maxMoment === trainTime) {
+            //
+            //   // Format train arrival to be readable
+            //   var tArrival = trainTime.format("hh:mm A");
+            //
+            //   // Use trainTime and current moment() to calculate minutes unitl next arrival
+            //   var tMinutes = trainTime.diff(moment(), "minutes");
+            //
+            // } else {
+            //
+            //   // differenceTimes is how long it has passed since first train of day
+            //   var differenceTimes = moment().diff(trainTime, "minutes");
+            //
+            //   // tRemainder is the left over of taking the diffferenceTimes and modulus frequency.
+            //   var tRemainder = differenceTimes % frequencyData;
+            //
+            //   // tMinutes takes the frequency and - the remainder. This number is always less than frequency
+            //   var tMinutes = frequencyData - tRemainder;
+            //
+            //   // Next arrival is the current time plus the tMinutes
+            //   var tArrival = moment().add(tMinutes, "m").format("hh:mm A");
+            // }
+
 
             var newRow = $("<tr>").append(
-                $("<td>").text(TrainName),
-                $("<td>").text(destination),
-                $("<td>").text(firstTimeTrain),
-                $("<td>").text(frecuency),
+                $("<td>").text(childSnapshot.val().TrainName),
+                $("<td>").text(childSnapshot.val().destination),
+                $("<td>").text(childSnapshot.val().frequency),
+                // $("<td>").text(childSnapshot.val().tArrival),
+                // $("<td>").text(childSnapshot.val().tMinutes),
             );
-
             // FULL TRAIN LIST
+            $("#train-table").append(newRow);
 
-            $("#train-table").append(newRow);           
-           
-            }, function(errorObject) {
-            console.log("The read failed: " + errorObject.code);
         });
-
-        // dataRef.ref().orderByChild("dateAdded").limitToLast(20).on("child_added", function(snapshot) {
-        //     // Change the HTML to reflect
-        //     $("#name-display").text(snapshot.val().name);
-        //     $("#email-display").text(snapshot.val().email);
-        //     $("#age-display").text(snapshot.val().age);
-        //     $("#comment-display").text(snapshot.val().comment);
-        //   });
-
-
